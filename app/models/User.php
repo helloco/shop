@@ -36,4 +36,25 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		);
 		return $result ? true : false;
 	}
+
+	public static function getUserInfo()
+	{
+		$result = DB::table('user')->get();
+		return $result ? $result : null;
+	}
+	public function updataLogin($user , $loginTime)
+	{
+		$result = DB::table('user')->where('name' , $user)->update(array('login' => $loginTime));
+		return $result ? true : false;
+	}
+
+	public function deleteUser($id)
+	{
+		if(empty($id))
+		{
+			return false;
+		}
+		$result = DB::table('user')->where('id' , $id)->delete();
+		return $result ? true : false;
+	}
 }

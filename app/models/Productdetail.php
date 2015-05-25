@@ -16,4 +16,10 @@ class Productdetail extends Eloquent {
         );
         return $result ? true : false;
     }
+
+    public static function viewProduct()
+    {
+        $result = DB::table('product_detail')->get();
+        return  $result ? $result : null;
+    }
 }

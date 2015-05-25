@@ -61,6 +61,23 @@ class SystemController extends AdminController {
         }
     }
 
+    public function viewUser()
+    {
+        $userInfo = User::getUserInfo();
+        return View::make('system.viewUser',compact('userInfo'));
+    }
+
+    public function deleteUser()
+    {
+        $id = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $user = new User();
+        if($user->deleteUser($id))
+        {
+            return Response::json(['success' => true, 'errors' => '删除成功']);
+        }else {
+            return Response::json(['success' => false, 'errors' => '删除失败']);
+        }
+    }
     public function viewOrder()
     {
         $orderLists = Repertoryapplylist::getApplyList();
@@ -100,6 +117,87 @@ class SystemController extends AdminController {
             return Response::json(['success' => true, 'errors' => '删除成功']);
         }else {
             return Response::json(['success' => false, 'errors' => '删除失败']);
+        }
+    }
+
+    public function addShopView()
+    {
+        return View::make('system.addShopView');
+    }
+
+    public function addShop()
+    {
+
+        $name = htmlspecialchars($_POST['name'],ENT_QUOTES);
+        $owner = htmlspecialchars($_POST['owner'],ENT_QUOTES);
+        $desc = htmlspecialchars($_POST['desc'],ENT_QUOTES);
+
+        $input = array(
+            'name' => $name,
+            'owner' => $owner,
+            'desc' => $desc,
+        );
+        $rules = array (
+            'name' => 'required',
+            'owner' => 'required',
+            'desc' => 'required',
+        );
+        $validator = Validator::make($input, $rules);
+        if ( $validator->fails() )
+        {
+            if(Request::ajax())
+            {
+                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+            } else{
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+
+        } else {
+            $shop = new Shop();
+            $result = $shop->addProduct($name , $owner , $desc);
+            if($result)
+            {
+                return Response::json(['success' => true, 'errors' => $validator->getMessageBag()->toArray()]);
+            }else {
+                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+            }
+        }
+
+    }
+
+    public function viewShop()
+    {
+        $shop = new Shop();
+        $shopInfo = $shop->getShopInfo();
+        return View::make('system.viewShop',compact('shopInfo'));
+    }
+
+    public function deleteShop()
+    {
+        $id = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $shop = new Shop();
+        if($shop->deleteShop($id))
+        {
+            return Response::json(['success' => true, 'errors' => '删除成功']);
+        }else {
+            return Response::json(['success' => false, 'errors' => '删除失败']);
+        }
+    }
+
+    public function updateShopInfo()
+    {
+        $shopId = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $shopName = htmlspecialchars($_POST['shopName'],ENT_QUOTES);
+        $shopOwner = htmlspecialchars($_POST['shopOwner'],ENT_QUOTES);
+        $shopDesc = htmlspecialchars($_POST['shopDesc'],ENT_QUOTES);
+        $shop = new Shop();
+
+        $result = $shop->updateShopInfo($shopId , $shopName, $shopOwner, $shopDesc);
+        if($result)
+        {
+            return Response::json(['success' => true, 'errors' => '更新成功']);
+        }else {
+            return Response::json(['success' => false, 'errors' => '更新失败']);
         }
     }
 }

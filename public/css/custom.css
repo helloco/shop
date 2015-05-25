@@ -1,0 +1,7 @@
+#loginbox {
+    height: initial !important;
+}
+
+#loginbox form {
+    position: relative;
+}

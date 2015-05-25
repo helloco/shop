@@ -30,6 +30,8 @@ class HomeController extends BaseController {
 			{
 				Session::put('user.name',$name);
 				Session::put('user.role',$role);
+				$user = new User();
+				$res = $user->updataLogin($name , time());
 //				return Redirect::action('SystemController@index');
 //				return Redirect::route('system.index');
 //				echo "OKKK";exit;
@@ -41,7 +43,7 @@ class HomeController extends BaseController {
 					return Redirect::to('rept');
 				} elseif ($role == self::ROLE_SHOP)
 				{
-					return Redirect::to('shop');
+					return Redirect::to('shopindex');
 				}
 			}else {
 				return Redirect::to('/')->with('errors', '请您正确填写下列数据')->withInput();
@@ -56,20 +58,4 @@ class HomeController extends BaseController {
 		}
 	}
 
-	// insert data
-	public function fuck()
-	{
-		$user = User::find(1);
-
-		Auth::login($user);
-		var_dump("<pre>",$user);
-//		$user = new User();
-//
-//		$user->name = 'coco';
-//		$user->password = Hash::make('coco');
-//		$user->role = 1;
-//		$user->email = 'coco@coco.cn';
-//		$user->login = '11';
-//		$user->save();
-	}
 }

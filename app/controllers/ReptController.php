@@ -57,7 +57,7 @@ class ReptController extends AdminController {
 
     public function viewProduct()
     {
-        $products = DB::table('product_detail')->paginate(1);
+        $products = DB::table('product_detail')->paginate(1000);
         return View::make('rept.viewProduct',compact('products'));
     }
 

@@ -82,7 +82,8 @@ class Repertoryapplylist extends Eloquent {
             $orderList = array(
                 'order_id' => $order_id, 'proposer' => Session::get('user.name'), 'status' => 1, 'apply_time' => time(), 'proposer_role' => Session::get('user.role')
             );
-            DB::table('repertory_apply_list')->insert($orderList);
+            $res = DB::table('repertory_apply_list')->insert($orderList);
+            return $res ? true : false;
 
         } else {
             die("please come with right enterence");

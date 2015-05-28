@@ -3,18 +3,12 @@
 @section('content')
 
         <div id="content-header">
-            <h1>Form validation</h1>
-            <div class="btn-group">
-                <a class="btn btn-large tip-bottom" title="Manage Files"><i class="icon-file"></i></a>
-                <a class="btn btn-large tip-bottom" title="Manage Users"><i class="icon-user"></i></a>
-                <a class="btn btn-large tip-bottom" title="Manage Comments"><i class="icon-comment"></i><span class="label label-important">5</span></a>
-                <a class="btn btn-large tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a>
-            </div>
+            <h1>添加用户</h1>
+
         </div>
         <div id="breadcrumb">
-            <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a>
-            <a href="#">Form elements</a>
-            <a href="#" class="current">Validation</a>
+            <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 菜单</a>
+            <a href="#" class="current">添加用户（管理员）</a>
         </div>
         <div class="container-fluid">
             <div class="row-fluid">
@@ -24,14 +18,14 @@
 								<span class="icon">
 									<i class="icon-align-justify"></i>
 								</span>
-                            <h5>Basic validation</h5>
-                            <span class="label label-important">48 notices</span>
+                            <h5>添加用户（管理员）</h5>
+                            <span class="label label-important">提示：用户名和密码不得少于8个字符</span>
                         </div>
                         <div class="widget-content nopadding">
                             <form class="form-horizontal" method="post" action="/"  accept-charset="UTF-8" name="basic_validate" id="basic_validate" novalidate="novalidate" />
 
                             <div class="control-group">
-                                <label class="control-label">Role</label>
+                                <label class="control-label">角色</label>
                                 <div class="controls">
                                     <select name="role" id="role">
                                         <option value="1"/>系统管理员
@@ -41,13 +35,13 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">User name</label>
+                                <label class="control-label">用户名</label>
                                 <div class="controls">
                                     <input type="text" name="name" id="name" />
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label class="control-label">Password</label>
+                                <label class="control-label">密码</label>
                                 <div class="controls">
                                     <input type="password" name="password" id="password" />
                                 </div>
@@ -60,7 +54,7 @@
                             </div>
 
                             <div class="form-actions">
-                                <input type="button" value="Add" class="submit" />
+                                <input type="button" value="添加" class="submit" />
                             </div>
                             </form>
                         </div>
@@ -69,7 +63,7 @@
             </div>
             <div class="row-fluid">
                 <div id="footer" class="span12">
-                    2012 &copy; Unicorn Admin. Brought to you by <a href="https://wrapbootstrap.com/user/diablo9983">diablo9983</a>
+                    2015 &copy; Shop Admin. Brought to you by <a href="#">coco</a>
                 </div>
             </div>
         </div>
@@ -92,11 +86,14 @@
             }).done(function (msg) {
                 $.each(msg, function(index, value)
                 {
-                    if (value.length != 0)
+                    if(value != true)
                     {
-                        $("#validation-errors").append('<div class="alert alert-error"><strong>'+ value +'</strong><strong>填写有误</strong><div>');
+                        alert("添加失败！请检查填写的信息！");
+                    } else {
+                        alert("添加成功！");
                     }
                 });
+                location.reload();
             });
 
         })

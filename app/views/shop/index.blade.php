@@ -12,9 +12,8 @@
         </div>
     </div>
     <div id="breadcrumb">
-        <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a>
-        <a href="#">Form elements</a>
-        <a href="#" class="current">Validation</a>
+        <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 菜单</a>
+        <a href="#" class="current">增加进货订单申请</a>
     </div>
     <div class="container-fluid">
         <div class="row-fluid">
@@ -24,8 +23,8 @@
 								<span class="icon">
 									<i class="icon-align-justify"></i>
 								</span>
-                        <h5>Basic validation</h5>
-                        <span class="label label-important">48 notices</span>
+                        <h5>增加进货订单申请</h5>
+                        <span class="label label-important">点击“+”号添加多个商品</span>
                     </div>
                     <div class="widget-content nopadding">
                         {{ Form::open(array('url' => 'shop/addApply' , 'method' => 'post')) }}
@@ -58,7 +57,7 @@
         </div>
         <div class="row-fluid">
             <div id="footer" class="span12">
-                2012 &copy; Unicorn Admin. Brought to you by <a href="https://wrapbootstrap.com/user/diablo9983">diablo9983</a>
+                2015 &copy; Shop Admin. Brought to you by <a href="#">coco</a>
             </div>
         </div>
     </div>

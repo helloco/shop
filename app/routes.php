@@ -40,12 +40,18 @@ Route::POST('system/rejectOrder', 'SystemController@rejectOrder');
 Route::POST('system/deleteShop', 'SystemController@deleteShop');
 Route::POST('system/updateShopInfo', 'SystemController@updateShopInfo');
 
-Route::get('rept' , 'ReptController@index');
+Route::get('rept/addProductView' , 'ReptController@index');
 Route::POST('addProduct' , 'ReptController@addProduct');
+Route::POST('rept/deleteProduct' , 'ReptController@deleteProduct');
 Route::get('rept/viewProduct' , 'ReptController@viewProduct');
 Route::get('rept/viewOrder' , 'ReptController@viewOrder');
 
+Route::POST('rept/deleteOrder', 'ReptController@deleteOrder');
+
 Route::get('rept/addApplyView' , 'ReptController@addApplyView');
+Route::get('rept/logout' , 'BaseController@logout');
+
+Route::get('{name?}/logout' , 'BaseController@logout');
 Route::resource('rept/addApply' , 'ReptController@addApply');
 
 
@@ -55,3 +61,5 @@ Route::resource('shop/addApply' , 'ShopController@addApply');
 Route::get('shop/addApplyView' , 'ShopController@index');
 Route::get('shop/viewOrder' , 'ShopController@viewOrder');
 Route::get('shop/viewProduct' , 'ShopController@viewProduct');
+
+Route::POST('shop/deleteOrder', 'ShopController@deleteOrder');

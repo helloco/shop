@@ -23,7 +23,23 @@ class ShopController extends AdminController {
     public function addApply()
     {
         $repertoryApply = new Repertoryapplylist();
-        $repertoryApply->addApplyInfo();
+        $res = $repertoryApply->addApplyInfo();
+        if($res)
+        {
+            return View::make('shop.pubSuccess');
+        }
+    }
+
+    public function deleteOrder()
+    {
+        $orderId = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $deleteRes = Repertoryapplylist::deleteOrder($orderId);
+        if($deleteRes)
+        {
+            return Response::json(['success' => true]);
+        }else {
+            return Response::json(['success' => false]);
+        }
     }
 
     public function viewOrder()

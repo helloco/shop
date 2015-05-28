@@ -38,19 +38,24 @@ class ReptController extends AdminController {
         {
             if(Request::ajax())
             {
-                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => false]);
             } else{
                 return Redirect::back()->withInput()->withErrors($validator);
             }
 
         } else {
+            $res = Productdetail::checkProId($id);
+            if( ! $res )
+            {
+                return Response::json(['success' => false]);
+            }
             $result = Productdetail::addProduct($id , $name , $maker , $addTime = time());
             //$result = $pro_det->addProduct($id , $name , $maker , $addTime = time());
             if($result)
             {
-                return Response::json(['success' => true, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => true]);
             }else {
-                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => false]);
             }
         }
     }
@@ -59,6 +64,18 @@ class ReptController extends AdminController {
     {
         $products = DB::table('product_detail')->paginate(1000);
         return View::make('rept.viewProduct',compact('products'));
+    }
+
+    public function deleteProduct()
+    {
+        $id = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $productdetail = new Productdetail();;
+        if($productdetail->deleteProduct($id))
+        {
+            return Response::json(['success' => true]);
+        }else {
+            return Response::json(['success' => false]);
+        }
     }
 
     public function addApplyView()
@@ -107,7 +124,11 @@ class ReptController extends AdminController {
             $orderList = array(
                 'order_id' => $order_id, 'proposer' => Session::get('user.name'), 'status' => self::$apply_status['applying'], 'apply_time' => time()
             );
-            DB::table('repertory_apply_list')->insert($orderList);
+            $res = DB::table('repertory_apply_list')->insert($orderList);
+            if($res)
+            {
+                return View::make('rept.pubSuccess');
+            }
 
         } else {
             die("please come with right enterence");
@@ -118,5 +139,22 @@ class ReptController extends AdminController {
     {
         $orderLists = Repertoryapplylist::getApplyList();
         return View::make('rept.viewOrder',compact('orderLists'));
+    }
+
+    public function deleteOrder()
+    {
+        $orderId = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $deleteRes = Repertoryapplylist::deleteOrder($orderId);
+        if($deleteRes)
+        {
+            return Response::json(['success' => true]);
+        }else {
+            return Response::json(['success' => false]);
+        }
+    }
+
+    public function logout()
+    {
+        return Redirect::to('/');
     }
 }

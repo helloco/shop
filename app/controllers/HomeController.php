@@ -40,7 +40,7 @@ class HomeController extends BaseController {
 					return Redirect::to('system');
 				} elseif ($role == self::ROLE_REPERTORY)
 				{
-					return Redirect::to('rept');
+					return Redirect::to('rept/addProductView');
 				} elseif ($role == self::ROLE_SHOP)
 				{
 					return Redirect::to('shopindex');

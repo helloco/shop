@@ -15,7 +15,7 @@
 </div>
 <div id="loginbox">
     {{ Form::open(array('url' => 'postLogin' , 'method' => 'post' , 'class' => 'form-vertical' , 'id'=> 'loginform')) }}
-    <p>Enter username and password to continue.</p>
+    <p>欢迎来到连锁店管理系统</p>
     <div class="control-group">
         <div class="controls">
             <div class="input-prepend">
@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-actions">
-        <span class="pull-right"><input type="submit" class="btn btn-inverse" value="Login" /></span>
+        <span class="pull-right"><input type="submit" class="btn btn-inverse" value="登录" /></span>
     </div>
     {{ Form::close() }}
 </div>

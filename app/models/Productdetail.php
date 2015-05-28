@@ -22,4 +22,26 @@ class Productdetail extends Eloquent {
         $result = DB::table('product_detail')->get();
         return  $result ? $result : null;
     }
+
+    public static function checkProId($id)
+    {
+        $res = DB::table('product_detail')->where('id' , $id)->get();
+        if($res)
+        {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function deleteProduct($id)
+    {
+        $res = DB::table('product_detail')->where('id' , $id)->delete();
+        if($res)
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

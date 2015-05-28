@@ -27,4 +27,8 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function logout()
+	{
+		return Redirect::to('/');
+	}
 }

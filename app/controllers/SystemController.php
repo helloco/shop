@@ -45,7 +45,7 @@ class SystemController extends AdminController {
         {
             if(Request::ajax())
             {
-                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => false]);
             } else{
                 return Redirect::back()->withInput()->withErrors($validator);
             }
@@ -54,9 +54,9 @@ class SystemController extends AdminController {
             $result = User::addUser($role , $name , $password , $email);
             if($result)
             {
-                return Response::json(['success' => true, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => true]);
             }else {
-                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => false]);
             }
         }
     }
@@ -73,9 +73,9 @@ class SystemController extends AdminController {
         $user = new User();
         if($user->deleteUser($id))
         {
-            return Response::json(['success' => true, 'errors' => '删除成功']);
+            return Response::json(['success' => true]);
         }else {
-            return Response::json(['success' => false, 'errors' => '删除失败']);
+            return Response::json(['success' => false]);
         }
     }
     public function viewOrder()
@@ -90,9 +90,9 @@ class SystemController extends AdminController {
         $deleteRes = Repertoryapplylist::deleteOrder($orderId);
         if($deleteRes)
         {
-            return Response::json(['success' => true, 'errors' => '删除成功']);
+            return Response::json(['success' => true]);
         }else {
-            return Response::json(['success' => false, 'errors' => '删除失败']);
+            return Response::json(['success' => false]);
         }
     }
 
@@ -102,9 +102,9 @@ class SystemController extends AdminController {
         $Res = Repertoryapplylist::passOrder($orderId);
         if($Res)
         {
-            return Response::json(['success' => true, 'errors' => '删除成功']);
+            return Response::json(['success' => true]);
         }else {
-            return Response::json(['success' => false, 'errors' => '删除失败']);
+            return Response::json(['success' => false]);
         }
     }
 
@@ -114,9 +114,9 @@ class SystemController extends AdminController {
         $Res = Repertoryapplylist::rejectOrder($orderId);
         if($Res)
         {
-            return Response::json(['success' => true, 'errors' => '删除成功']);
+            return Response::json(['success' => true]);
         }else {
-            return Response::json(['success' => false, 'errors' => '删除失败']);
+            return Response::json(['success' => false]);
         }
     }
 
@@ -147,7 +147,7 @@ class SystemController extends AdminController {
         {
             if(Request::ajax())
             {
-                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => false]);
             } else{
                 return Redirect::back()->withInput()->withErrors($validator);
             }
@@ -157,9 +157,9 @@ class SystemController extends AdminController {
             $result = $shop->addProduct($name , $owner , $desc);
             if($result)
             {
-                return Response::json(['success' => true, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => true]);
             }else {
-                return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+                return Response::json(['success' => false]);
             }
         }
 
@@ -178,9 +178,9 @@ class SystemController extends AdminController {
         $shop = new Shop();
         if($shop->deleteShop($id))
         {
-            return Response::json(['success' => true, 'errors' => '删除成功']);
+            return Response::json(['success' => true]);
         }else {
-            return Response::json(['success' => false, 'errors' => '删除失败']);
+            return Response::json(['success' => false]);
         }
     }
 
@@ -195,9 +195,9 @@ class SystemController extends AdminController {
         $result = $shop->updateShopInfo($shopId , $shopName, $shopOwner, $shopDesc);
         if($result)
         {
-            return Response::json(['success' => true, 'errors' => '更新成功']);
+            return Response::json(['success' => true]);
         }else {
-            return Response::json(['success' => false, 'errors' => '更新失败']);
+            return Response::json(['success' => false]);
         }
     }
 }

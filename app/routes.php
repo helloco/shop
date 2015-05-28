@@ -63,3 +63,5 @@ Route::get('shop/viewOrder' , 'ShopController@viewOrder');
 Route::get('shop/viewProduct' , 'ShopController@viewProduct');
 
 Route::POST('shop/deleteOrder', 'ShopController@deleteOrder');
+
+Route::resource('{name?}/orderDetail' , 'AdminController@orderDetail');

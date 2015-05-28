@@ -36,7 +36,7 @@
                                     <td>{{$product->id}}</td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->maker}}</td>
-                                    <td> {{ date('Y-m-d , h:m:s', strtotime($product->add_time)) }}</td>
+                                    <td> {{ date('Y-m-d , h:m:s', $product->add_time) }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

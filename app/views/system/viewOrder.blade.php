@@ -28,6 +28,7 @@
                                     <th>订单产生者</th>
                                     <th>订单状态</th>
                                     <th>申请时间</th>
+                                    <th>查看</th>
                                     <th>通过</th>
                                     <th>驳回</th>
                                     <th>删除</th>
@@ -40,7 +41,10 @@
                                         <td>{{$orderList->order_id}}</td>
                                         <td>{{$orderList->proposer}}</td>
                                         <td>{{$orderList->status}}</td>
-                                        <td> {{ date('Y-m-d , h:m:s', strtotime($orderList->apply_time)) }}</td>
+                                        <td> {{ date('Y-m-d , h:m:s', $orderList->apply_time) }}</td>
+                                        <td><div class="detail" value="{{$orderList->order_id}}" >
+                                                <a id="add-event" data-toggle="modal" href="#modal-add-event" class="btn btn-success btn-mini"><i class="icon-eye-open"></i> 详情</a>
+                                            </div></td>
                                         <td><div class="pass" value="{{$orderList->order_id}}" ><a href="#">通过</a></div></td>
                                         <td><div class="reject" value="{{$orderList->order_id}}" ><a href="#">驳回</a></div></td>
                                         <td><div class="delete" value="{{$orderList->order_id}}" ><a href="#">删除</a></div></td>
@@ -51,12 +55,44 @@
                         </div>
                     </div>
 
+
+                    <div class="buttons">
+                        <div class="modal hide" id="modal-add-event" aria-hidden="true" style="display: none;">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">×</button>
+                                <h3>订单详情</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body">
+                                    <label></label>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>订单编号</th>
+                                            <th>商品编号</th>
+                                            <th>数量</th>
+                                            <th>价格</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="order_detail">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" data-dismiss="modal" class="btn btn-primary">确认</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="row-fluid">
                 <div id="footer" class="span12">
-                    2012 © Unicorn Admin. Brought to you by <a href="https://wrapbootstrap.com/user/diablo9983">diablo9983</a>
+                    2015 &copy; Shop Admin. Brought to you by <a href="#">coco</a>
                 </div>
             </div>
         </div>
@@ -131,6 +167,25 @@
                         }
                     });
                     location.reload();
+                });
+            })
+        });
+
+        $(function () {
+            $('.detail').click(function () {
+                $('.order_detail').empty();
+                $.ajax({
+                    type:'post',
+                    url :'orderDetail',
+                    data:{
+                        id: $(this).attr('value')
+                    }
+                }).done(function (msg) {
+                    $.each(msg, function(index, value)
+                    {
+                        $('.order_detail').append("<tr> <th>"+value.order_id+"</th> <th>"+value.product_id+"</th> <th>"+value.num+"</th> <th>"+value.price+"</th> </tr>");
+                    });
+
                 });
             })
         });

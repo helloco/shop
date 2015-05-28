@@ -37,7 +37,7 @@
                                     <td>{{$orderList->order_id}}</td>
                                     <td>{{$orderList->proposer}}</td>
                                     <td>{{$orderList->status}}</td>
-                                    <td> {{ date('Y-m-d , h:m:s', strtotime($orderList->apply_time)) }}</td>
+                                    <td> {{ date('Y-m-d , h:m:s', $orderList->apply_time) }}</td>
                                     <td><div class="delete" value="{{$orderList->order_id}}" ><a href="#">删除</a></div></td>
                                 </tr>
                             @endforeach
@@ -51,7 +51,7 @@
 
         <div class="row-fluid">
             <div id="footer" class="span12">
-                2012 © Unicorn Admin. Brought to you by <a href="https://wrapbootstrap.com/user/diablo9983">diablo9983</a>
+                2015 © Shop Admin. Brought to you by <a href="#">coco</a>
             </div>
         </div>
     </div>

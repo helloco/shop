@@ -7,7 +7,14 @@ class Repertoryapplylist extends Eloquent {
 
     public static function getApplyList()
     {
-        $orderLists = DB::table('repertory_apply_list')->get();
+
+        if(Session::get('user.role') == 1)
+        {
+            $orderLists = DB::table('repertory_apply_list')->get();
+        } else {
+            $orderLists = DB::table('repertory_apply_list')->where('proposer_role' , '=' , Session::get('user.role'))->get();
+        }
+
         return  $orderLists ? $orderLists : null;
     }
 

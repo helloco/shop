@@ -24,4 +24,13 @@ class AdminController extends BaseController {
         }
     }
 
+
+    public function orderDetail()
+    {
+        $order_id = htmlspecialchars($_POST['id'],ENT_QUOTES);
+        $order_detail = Repertoryapplydetail::getOrderDetail($order_id);
+        return Response::json($order_detail);
+        //echo json_encode($order_detail,true);
+    }
+
 }

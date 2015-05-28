@@ -38,7 +38,7 @@
                                     <td>{{$product->id}}</td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->maker}}</td>
-                                    <td> {{ date('Y-m-d , h:m:s', strtotime($product->add_time)) }}</td>
+                                    <td> {{ date('Y-m-d , h:m:s', $product->add_time) }}</td>
                                     <td><div class="delete" value="{{$product->id}}" ><a href="#">删除</a></div></td>
                                 </tr>
                             @endforeach

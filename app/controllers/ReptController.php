@@ -122,7 +122,7 @@ class ReptController extends AdminController {
             $result = DB::table('repertory_apply_detail')->insert($dataDetail);
 
             $orderList = array(
-                'order_id' => $order_id, 'proposer' => Session::get('user.name'), 'status' => self::$apply_status['applying'], 'apply_time' => time()
+                'order_id' => $order_id, 'proposer' => Session::get('user.name'), 'status' => self::$apply_status['applying'], 'apply_time' => time(),'proposer_role' => Session::get('user.role')
             );
             $res = DB::table('repertory_apply_list')->insert($orderList);
             if($res)

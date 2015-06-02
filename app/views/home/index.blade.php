@@ -1,57 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Unicorn Admin</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ URL::asset('public/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ URL::asset('public/css/bootstrap-responsive.min.css') }}" />
-    <link rel="stylesheet" href="{{ URL::asset('public/css/unicorn.login.css') }}" />
-    <link rel="stylesheet" href="{{ URL::asset('public/css/custom.css') }}" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
-<body>
-<div id="logo">
-    <img src="{{ URL::asset('public/img/logo.png') }}" alt="" />
-</div>
-<div id="loginbox">
-    {{ Form::open(array('url' => 'postLogin' , 'method' => 'post' , 'class' => 'form-vertical' , 'id'=> 'loginform')) }}
-    <p>欢迎来到连锁店管理系统</p>
-    <div class="control-group">
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-user"></i></span><input name="name" type="text" placeholder="Username" />
-            </div>
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-lock"></i></span><input name="password" type="password" placeholder="Password" />
-            </div>
-        </div>
-    </div>
+@extends('home.master')
 
-    <div class="control-group">
+@section('left')
 
-        <div class="controls">
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-warning-sign"></i></span>
-                <select name="role">
-                    <option value="1"/>系统管理员
-                    <option value="2"/>仓库管理员
-                    <option value="3"/>连锁店管理员
-                </select>
-            </div>
-        </div>
+    <div class="col-md-8">
+        <div class="panel-heading"> <a href="/bbs/postView" class="pull-right">创作一个新主题</a><h4><strong><i class="glyphicon glyphicon-comment"></i> 最新主题</strong></h4></div>
+        <ul class="list-group">
+            @foreach($subjectsInfo as $subjectInfo)
+                <li class="list-group-item"><span class="pull-right"><a href="#">{{$subjectInfo->author}}</a></span><a href='{{URL::to("t/$subjectInfo->id")}}'><i class="glyphicon glyphicon-flash"></i>  {{$subjectInfo->title}}</a><small>( {{ date("Y-m-d,h:m:s", $subjectInfo->post_time) }} )</small></li>
+
+            @endforeach
+        </ul>
+
+
     </div>
-
-    <div class="form-actions">
-        <span class="pull-right"><input type="submit" class="btn btn-inverse" value="登录" /></span>
-    </div>
-    {{ Form::close() }}
-</div>
-
-<script src="{{ URL::asset('public/js/jquery.min.js') }}"></script>
-<script src="{{ URL::asset('public/js/unicorn.login.js') }}"></script>
-</body>
-</html>
+    @stop

@@ -5,3 +5,8 @@
 #loginbox form {
     position: relative;
 }
+
+.container {
+    width: 1070px;
+}
+

@@ -2,49 +2,48 @@
 
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
-	public function login()
+
+	public function __construct()
 	{
-		return View::make('home.index');
+		parent::__construct();
 	}
 
-	public function postLogin()
+	public function index()
+	{
+		if($this->redis->get(self::KEY_INDEXSUBJECTS))
+		{
+			$subjectsInfo = unserialize($this->redis->get(self::KEY_INDEXSUBJECTS));
+		} else {
+			$subject = new Subject();
+			$subjectsInfo = $subject->getSubject(self::INDEX_SUBJECT_NUM);
+			$this->redis->set(self::KEY_INDEXSUBJECTS , serialize($subjectsInfo));
+		}
+
+		$latestReplyInfo = self::getLatesReply();
+
+		$userInfo = self::getLatestUserInfo();
+		return View::make('home.index',compact('subjectsInfo' , 'userInfo' , 'latestReplyInfo') );
+	}
+
+	public function login()
 	{
 		if ($_POST)
 		{
-			$name = htmlspecialchars($_POST['name'],ENT_QUOTES);
+			$name = htmlspecialchars($_POST['username'],ENT_QUOTES);
 			$password = htmlspecialchars($_POST['password'],ENT_QUOTES);
-			$role = htmlspecialchars($_POST['role'],ENT_QUOTES);
-			if(User::checkLogin($name, $password, $role))
+			$user = new User();
+			$result = $user->checkLogin($name, $password);
+			if($result)
 			{
+				$userInfo = (array)$result[0];
 				Session::put('user.name',$name);
-				Session::put('user.role',$role);
-				$user = new User();
-				$res = $user->updataLogin($name , time());
-//				return Redirect::action('SystemController@index');
-//				return Redirect::route('system.index');
-//				echo "OKKK";exit;
-				if ($role == self::ROLE_SYSTEM)
-				{
-					return Redirect::to('system');
-				} elseif ($role == self::ROLE_REPERTORY)
-				{
-					return Redirect::to('rept/addProductView');
-				} elseif ($role == self::ROLE_SHOP)
-				{
-					return Redirect::to('shopindex');
+				Session::put('user.role',$userInfo['role']);
+
+				try {
+					$user->updataLogin($name , time());
+				} catch (Exception $e) {
 				}
+				return Response::json(['success' => true  ]);
 			}else {
 				return Redirect::to('/')->with('errors', '请您正确填写下列数据')->withInput();
 			}
@@ -52,10 +51,95 @@ class HomeController extends BaseController {
 		else {
 			echo "sorry";exit;
 			// 登录失败，跳回
-			return Redirect::back()
-				->withInput()
-				->withErrors(array('attempt' => '“用户名”或“密码”错误，请重新登录！'));
 		}
 	}
 
+	public function register()
+	{
+		$name = htmlspecialchars($_POST['username'],ENT_QUOTES);
+		$password = htmlspecialchars($_POST['password'],ENT_QUOTES);
+		$input = array(
+			'name' => $name,
+			'password' => $password,
+		);
+		$rules = array (
+			'name' => 'required|unique:user',
+			'password' => 'required|min:6',
+		);
+		$validator = Validator::make($input, $rules);
+		if ( $validator->fails() )
+		{
+			if(Request::ajax())
+			{
+				return Response::json(['success' => false]);
+			} else{
+				return Redirect::back()->withInput()->withErrors($validator);
+			}
+
+		} else {
+			$user = new User();
+			$res = $user->addUser($role = 2, $name , $password , $email = "");
+			if($res)
+			{
+				return Response::json(['success' => true]);
+			} else {
+				return Response::json(['success' => false]);
+			}
+		}
+	}
+
+	public function postView()
+	{
+		return View::make('home.postView');
+	}
+
+	public function postDetail($id)
+	{
+		$subject = new Subject();
+		$subjectInfo = $subject->getOneSubject($id);
+		$subjectInfo = (array)$subjectInfo[0];
+
+		// get comment message
+		$replies = Reply::getReplyBySubjectId($subjectInfo['id']);
+		$latestReplyInfo = self::getLatesReply();
+		// get latest user info
+		$userInfo = self::getLatestUserInfo();
+		//var_dump($userInfo);exit;
+		return View::make('home.postDetail' ,compact('replies' , 'subjectInfo' ,'userInfo' , 'latestReplyInfo'));
+
+	}
+
+	public function logout()
+	{
+		Session::flush();
+		return Redirect::to('/');
+
+	}
+/****
+	private function getLatesReply()
+	{
+		if($this->redis->get(self::KEY_LATESREPLIES))
+		{
+			$latestReplyInfo = unserialize($this->redis->get(self::KEY_LATESREPLIES));
+		} else {
+			$reply = new Reply();
+			$latestReplyInfo = $reply->getLatestReply();
+			$this->redis->set(self::KEY_LATESREPLIES ,serialize($latestReplyInfo));
+		}
+		return $latestReplyInfo;
+	}
+
+	public function getLatestUserInfo()
+	{
+		if( $this->redis->get(self::KEY_USER_INFO) )
+		{
+			$userInfo = unserialize( $this->redis->get(self::KEY_USER_INFO) );
+		} else {
+			$user = new User();
+			$userInfo = $user->getLatestUser();
+			$this->redis->set(self::KEY_USER_INFO , serialize($userInfo));
+		}
+		return $userInfo;
+	}
+****/
 }

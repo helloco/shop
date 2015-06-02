@@ -7,28 +7,48 @@ class BaseController extends Controller {
 	 *
 	 * @return void
 	 */
-	const ROLE_SYSTEM = 1; // system admin
-	const ROLE_REPERTORY = 2; // rept admin
-	const ROLE_SHOP = 3; // shop admin
+	const INDEX_SUBJECT_NUM = 24;
+	const KEY_LATESREPLIES = 'latestReplies';
+	const KEY_INDEXSUBJECTS = 'indexSubject';
+	const KEY_USER_INFO = 'userInfo';
 
-	public static $apply_status = array(
-		'applying'     => 1,
-		'applied'      => 2,
-		'apply_failed' => 3
-	);
+	public $redis;
 	public function __construct()
 	{
-	}
-	protected function setupLayout()
-	{
-		if ( ! is_null($this->layout))
-		{
-			$this->layout = View::make($this->layout);
-		}
+		$this->redis = $this->initRedis();
 	}
 
-	public function logout()
+	public function initRedis()
 	{
-		return Redirect::to('/');
+		$redis = new Redis();
+		$redis->connect('127.0.0.1', 6379);
+		return $redis;
 	}
+
+	public function getLatesReply()
+	{
+		if($this->redis->get(self::KEY_LATESREPLIES))
+		{
+			$latestReplyInfo = unserialize($this->redis->get(self::KEY_LATESREPLIES));
+		} else {
+			$reply = new Reply();
+			$latestReplyInfo = $reply->getLatestReply();
+			$this->redis->set(self::KEY_LATESREPLIES ,serialize($latestReplyInfo));
+		}
+		return $latestReplyInfo;
+	}
+
+	public function getLatestUserInfo()
+	{
+		if( $this->redis->get(self::KEY_USER_INFO) )
+		{
+			$userInfo = unserialize( $this->redis->get(self::KEY_USER_INFO) );
+		} else {
+			$user = new User();
+			$userInfo = $user->getLatestUser();
+			$this->redis->set(self::KEY_USER_INFO , serialize($userInfo));
+		}
+		return $userInfo;
+	}
+
 }
